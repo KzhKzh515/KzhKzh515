@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>တရုတ်-မြန်မာ အဘိဓာန်</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Padauk', 'Noto Sans Myanmar', sans-serif;
+            background: #f0f7ff;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #2c3e50;
+        }
+
+        .search-box {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        #search-input {
+            flex: 1;
+            padding: 12px;
+            font-size: 18px;
+            border: 2px solid #3498db;
+            border-radius: 8px;
+            font-family: 'Padauk', sans-serif;
+        }
+
+        #search-btn {
+            padding: 12px 24px;
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-family: 'Padauk', sans-serif;
+        }
+
+        .result-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .word-header {
+            display: flex;
+            align-items: baseline;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .chinese-word {
+            font-size: 24px;
+            font-weight: bold;
+            color: #e74c3c;
+        }
+
+        .pinyin {
+            color: #27ae60;
+            font-size: 18px;
+        }
+
+        .meaning-section {
+            margin: 15px 0;
+        }
+
+        .myanmar-translation {
+            color: #2c3e50;
+            font-size: 18px;
+            margin-left: 10px;
+        }
+
+        .part-of-speech {
+            color: #8e44ad;
+            font-weight: bold;
+        }
+
+        .error {
+            color: #e74c3c;
+            padding: 20px;
+            text-align: center;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>တရုတ်-မြန်မာ အဘိဓာန် 🇨🇳🇲🇲</h1>
+        </div>
+        
+        <div class="search-box">
+            <input type="text" id="search-input" placeholder="တရုတ်စကားလုံး ရိုက်ထည့်ပါ...">
+            <button id="search-btn">ရှာဖွေရန်</button>
+        </div>
+
+        <div id="results"></div>
+    </div>
+
+    <script>
+        // Sample Chinese-Myanmar Dictionary Data
+        const dictionaryData = [
+            {
+                chinese: "你好",
+                pinyin: "Nǐ hǎo",
+                translations: [
+                    {
+                        partOfSpeech: "နာမ်",
+                        myanmar: "မင်္ဂလာပါ"
+                    }
+                ]
+            },
+            {
+                chinese: "谢谢",
+                pinyin: "Xièxie",
+                translations: [
+                    {
+                        partOfSpeech: "နာမ်",
+                        myanmar: "ကျေးဇူးတင်ပါတယ်"
+                    }
+                ]
+            },
+            {
+                chinese: "早上好",
+                pinyin: "Zǎoshang hǎo",
+                translations: [
+                    {
+                        partOfSpeech: "နာမ်",
+                        myanmar: "ကန္တာရက္ခို"
+                    }
+                ]
+            }
+        ];
+
+        const searchInput = document.getElementById('search-input');
+        const searchBtn = document.getElementById('search-btn');
+        const resultsDiv = document.getElementById('results');
+
+        // Search Function
+        function searchWord() {
+            const query = searchInput.value.trim().toLowerCase();
+            if(!query) return;
+
+            const results = dictionaryData.filter(entry => 
+                entry.chinese.toLowerCase().includes(query) || 
+                entry.pinyin.toLowerCase().includes(query)
+            );
+
+            displayResults(results);
+        }
+
+        // Display Results
+        function displayResults(results) {
+            if(results.length === 0) {
+                resultsDiv.innerHTML = `<div class="error">စကားလုံးကိုမတွေ့ပါ</div>`;
+                return;
+            }
+
+            resultsDiv.innerHTML = results.map(entry => `
+                <div class="result-card">
+                    <div class="word-header">
+                        <span class="chinese-word">${entry.chinese}</span>
+                        <span class="pinyin">${entry.pinyin}</span>
+                    </div>
+                    ${entry.translations.map(trans => `
+                        <div class="meaning-section">
+                            <span class="pa
